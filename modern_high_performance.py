@@ -156,6 +156,11 @@ def SafeTrace(R):
     return -1
 
 @jit(nopython=True, cache=True)
+def SafeClip(x,mn,mx):
+    return min(mx,max(x,mn))
+
+
+@jit(nopython=True, cache=True)
 def MatrixLog3(R):
     """Computes the matrix logarithm of a rotation matrix
     :param R: A 3x3 rotation matrix
@@ -185,7 +190,7 @@ def MatrixLog3(R):
                   * np.array([1 + R[0][0], R[1][0], R[2][0]])
         return VecToso3(np.pi * omg)
     else:
-        theta = np.arccos(acosinput)
+        theta = np.arccos(SafeClip(acosinput,-1.0,1.0))
         return theta / 2.0 / np.sin(theta) * (R - (R).T)
 
 
@@ -459,9 +464,10 @@ def MatrixLog6(T):
         rarr[0:3,3] = np.array([T[0][3], T[1][3], T[2][3]])
         return rarr
     else:
-        theta = np.arccos((SafeTrace(R) - 1) / 2.0)
+        theta = np.arccos(SafeClip((SafeTrace(R) - 1) / 2.0), -1.0, 1.0)
         vec = np.array([T[0,3],T[1,3],T[2,3]])
-        lterm = np.eye(3) - omgmat / 2.0 + (1.0 / theta - 1.0 / np.tan(theta / 2.0) / 2)* np.dot(omgmat,omgmat) / theta
+        lterm = (np.eye(3) - omgmat / 2.0 + (1.0 / theta - 1.0 /
+            np.tan(theta / 2.0) / 2)* np.dot(omgmat,omgmat) / theta)
         retv = np.dot(lterm,vec)
         rarr = np.zeros((4,4))
         rarr[0:3,0:3] = omgmat
