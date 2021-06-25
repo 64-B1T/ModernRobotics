@@ -464,7 +464,7 @@ def MatrixLog6(T):
         rarr[0:3,3] = np.array([T[0][3], T[1][3], T[2][3]])
         return rarr
     else:
-        theta = np.arccos(SafeClip((SafeTrace(R) - 1) / 2.0), -1.0, 1.0)
+        theta = np.arccos(SafeClip(((SafeTrace(R) - 1) / 2.0), -1.0, 1.0))
         vec = np.array([T[0,3],T[1,3],T[2,3]])
         lterm = (np.eye(3) - omgmat / 2.0 + (1.0 / theta - 1.0 /
             np.tan(theta / 2.0) / 2)* np.dot(omgmat,omgmat) / theta)
