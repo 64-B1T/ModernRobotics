@@ -13,7 +13,7 @@ function ddthetalist = ForwardDynamics(thetalist, dthetalist, taulist, ...
 %              of a matrix with the screw axes as the columns,
 % Returns ddthetalist: The resulting joint accelerations.
 % This function computes ddthetalist by solving:
-% Mlist(thetalist) * ddthetalist = taulist - c(thetalist,dthetalist) ...
+% Mlist(thetalist) * ddthetalist = taulist - c(thetalist, dthetalist) ...
 %                                  - g(thetalist) - Jtr(thetalist) * Ftip
 % Example Input (3 Link Robot):
 % 
@@ -24,7 +24,7 @@ function ddthetalist = ForwardDynamics(thetalist, dthetalist, taulist, ...
 % g = [0; 0; -9.8];
 % Ftip = [1; 1; 1; 1; 1; 1];
 % M01 = [[1, 0, 0, 0]; [0, 1, 0, 0]; [0, 0, 1, 0.089159]; [0, 0, 0, 1]];
-% M12 = [[0, 0, 1, 0.28]; [0, 1, 0, 0.13585]; [-1, 0 ,0, 0]; [0, 0, 0, 1]];
+% M12 = [[0, 0, 1, 0.28]; [0, 1, 0, 0.13585]; [-1, 0 , 0, 0]; [0, 0, 0, 1]];
 % M23 = [[1, 0, 0, 0]; [0, 1, 0, -0.1197]; [0, 0, 1, 0.395]; [0, 0, 0, 1]];
 % M34 = [[1, 0, 0, 0]; [0, 1, 0, 0]; [0, 0, 1, 0.14225]; [0, 0, 0, 1]];
 % G1 = diag([0.010267, 0.010267, 0.00666, 3.7, 3.7, 3.7]);

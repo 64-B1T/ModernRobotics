@@ -52,9 +52,9 @@ traj = cell(1, N);
 [Rend, pend] = TransToRp(Xend);
 for i = 1: N
     if method == 3
-        s = CubicTimeScaling(Tf,timegap * (i - 1));
+        s = CubicTimeScaling(Tf, timegap * (i - 1));
     else
-        s = QuinticTimeScaling(Tf,timegap * (i - 1));
+        s = QuinticTimeScaling(Tf, timegap * (i - 1));
     end
     traj{i} ...
     = [Rstart * MatrixExp3(MatrixLog3(Rstart' * Rend) * s), ...

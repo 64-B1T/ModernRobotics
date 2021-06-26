@@ -40,7 +40,7 @@ function [thetamat, dthetamat] ...
 % g = [0; 0; -9.8];
 % Ftipmat = ones(size(taumat, 1), 6);
 % M01 = [[1, 0, 0, 0]; [0, 1, 0, 0]; [0, 0, 1, 0.089159]; [0, 0, 0, 1]];
-% M12 = [[0, 0, 1, 0.28]; [0, 1, 0, 0.13585]; [-1, 0 ,0, 0]; [0, 0, 0, 1]];
+% M12 = [[0, 0, 1, 0.28]; [0, 1, 0, 0.13585]; [-1, 0 , 0, 0]; [0, 0, 0, 1]];
 % M23 = [[1, 0, 0, 0]; [0, 1, 0, -0.1197]; [0, 0, 1, 0.395]; [0, 0, 0, 1]];
 % M34 = [[1, 0, 0, 0]; [0, 1, 0, 0]; [0, 0, 1, 0.14225]; [0, 0, 0, 1]];
 % G1 = diag([0.010267, 0.010267, 0.00666, 3.7, 3.7, 3.7]);
@@ -59,13 +59,13 @@ function [thetamat, dthetamat] ...
 % %Output using matplotlib to plot the joint forces/torques
 % Tf = size(taumat, 1);
 % time=0: (Tf / size(thetamat, 1)): (Tf - (Tf / size(thetamat, 1)));
-% plot(time,thetamat(:, 1),'b')
+% plot(time, thetamat(:, 1),'b')
 % hold on
-% plot(time,thetamat(:, 2), 'g')
-% plot(time,thetamat(:, 3), 'r')
-% plot(time,dthetamat(:, 1), 'c')
-% plot(time,dthetamat(:, 2), 'm')
-% plot(time,dthetamat(:, 3), 'y')
+% plot(time, thetamat(:, 2), 'g')
+% plot(time, thetamat(:, 3), 'r')
+% plot(time, dthetamat(:, 1), 'c')
+% plot(time, dthetamat(:, 2), 'm')
+% plot(time, dthetamat(:, 3), 'y')
 % title('Plot of Joint Angles and Joint Velocities')
 % xlabel('Time')
 % ylabel('Joint Angles/Velocities')
@@ -81,7 +81,7 @@ dthetamat(:, 1) = dthetalist;
 for i = 1: size(taumat, 2) - 1
     for j = 1: intRes
        ddthetalist ...
-       = ForwardDynamics(thetalist, dthetalist, taumat(:,i), g, ...
+       = ForwardDynamics(thetalist, dthetalist, taumat(:, i), g, ...
                          Ftipmat(:, i), Mlist, Glist, Slist);     
        [thetalist, dthetalist] = EulerStep(thetalist, dthetalist, ...
                                            ddthetalist, dt / intRes);

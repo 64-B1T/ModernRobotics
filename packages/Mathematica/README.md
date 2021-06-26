@@ -62,7 +62,7 @@ As mentioned in the function usage example, you can try using this function
 by running
 
 ```
-invR = RotInv[{{0,0,1},{1,0,0},{0,1,0}}]
+invR = RotInv[{{0, 0, 1},{1, 0, 0},{0, 1, 0}}]
 ```
 
 You should get the the same output as shown in the function usage example.

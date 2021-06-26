@@ -9,7 +9,7 @@ function s = CubicTimeScaling(Tf, t)
 % clear; clc;
 % Tf = 2;
 % t = 0.6;
-% s = CubicTimeScaling(Tf,t)
+% s = CubicTimeScaling(Tf, t)
 % 
 % Output:
 % s =

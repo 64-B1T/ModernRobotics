@@ -6,7 +6,7 @@ function c = VelQuadraticForces(thetalist, dthetalist, Mlist, Glist, Slist)
 %       Glist: Spatial inertia matrices Gi of the links,
 %       Slist: Screw axes Si of the joints in a space frame, in the format
 %              of a matrix with the screw axes as the columns,
-% Returns c: The vector c(thetalist,dthetalist) of Coriolis and centripetal
+% Returns c: The vector c(thetalist, dthetalist) of Coriolis and centripetal
 %            terms for a given thetalist and dthetalist.
 % This function calls InverseDynamics with g = 0, Ftip = 0, and 
 % ddthetalist = 0.
@@ -16,7 +16,7 @@ function c = VelQuadraticForces(thetalist, dthetalist, Mlist, Glist, Slist)
 % thetalist = [0.1; 0.1; 0.1];
 % dthetalist = [0.1; 0.2; 0.3];
 % M01 = [[1, 0, 0, 0]; [0, 1, 0, 0]; [0, 0, 1, 0.089159]; [0, 0, 0, 1]];
-% M12 = [[0, 0, 1, 0.28]; [0, 1, 0, 0.13585]; [-1, 0 ,0, 0]; [0, 0, 0, 1]];
+% M12 = [[0, 0, 1, 0.28]; [0, 1, 0, 0.13585]; [-1, 0 , 0, 0]; [0, 0, 0, 1]];
 % M23 = [[1, 0, 0, 0]; [0, 1, 0, -0.1197]; [0, 0, 1, 0.395]; [0, 0, 0, 1]];
 % M34 = [[1, 0, 0, 0]; [0, 1, 0, 0]; [0, 0, 1, 0.14225]; [0, 0, 0, 1]];
 % G1 = diag([0.010267, 0.010267, 0.00666, 3.7, 3.7, 3.7]);

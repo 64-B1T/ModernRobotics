@@ -16,7 +16,7 @@ function grav = GravityForces(thetalist, g, Mlist, Glist, Slist)
 % thetalist = [0.1; 0.1; 0.1];
 % g = [0; 0; -9.8];
 % M01 = [[1, 0, 0, 0]; [0, 1, 0, 0]; [0, 0, 1, 0.089159]; [0, 0, 0, 1]];
-% M12 = [[0, 0, 1, 0.28]; [0, 1, 0, 0.13585]; [-1, 0 ,0, 0]; [0, 0, 0, 1]];
+% M12 = [[0, 0, 1, 0.28]; [0, 1, 0, 0.13585]; [-1, 0 , 0, 0]; [0, 0, 0, 1]];
 % M23 = [[1, 0, 0, 0]; [0, 1, 0, -0.1197]; [0, 0, 1, 0.395]; [0, 0, 0, 1]];
 % M34 = [[1, 0, 0, 0]; [0, 1, 0, 0]; [0, 0, 1, 0.14225]; [0, 0, 0, 1]];
 % G1 = diag([0.010267, 0.010267, 0.00666, 3.7, 3.7, 3.7]);
@@ -36,6 +36,6 @@ function grav = GravityForces(thetalist, g, Mlist, Glist, Slist)
 %   -5.4416
 
 n = size(thetalist, 1);
-grav = InverseDynamics(thetalist, zeros(n, 1), zeros(n, 1) ,g, ...
+grav = InverseDynamics(thetalist, zeros(n, 1), zeros(n, 1) , g, ...
                        [0; 0; 0; 0; 0; 0], Mlist, Glist, Slist);
 end

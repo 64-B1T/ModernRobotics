@@ -16,7 +16,7 @@ function traj = ScrewTrajectory(Xstart, Xend, Tf, N, method)
 % Example Input:
 % 
 % clear; clc;
-% Xstart = [[1 ,0, 0, 1]; [0, 1, 0, 0]; [0, 0, 1, 1]; [0, 0, 0, 1]];
+% Xstart = [[1 , 0, 0, 1]; [0, 1, 0, 0]; [0, 0, 1, 1]; [0, 0, 0, 1]];
 % Xend = [[0, 0, 1, 0.1]; [1, 0, 0, 0]; [0, 1, 0, 4.1]; [0, 0, 0, 1]];
 % Tf = 5;
 % N = 4;

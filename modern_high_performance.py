@@ -151,13 +151,13 @@ def SafeTrace(R):
     if sz[0] == sz[1]:
         sum = 0
         for i in range(sz[0]):
-            sum = sum + R[i,i]
+            sum = sum + R[i, i]
         return sum
     return -1
 
 @jit(nopython=True, cache=True)
-def SafeClip(x,mn,mx):
-    return min(mx,max(x,mn))
+def SafeClip(x, mn, mx):
+    return min(mx, max(x, mn))
 
 
 @jit(nopython=True, cache=True)
@@ -190,7 +190,7 @@ def MatrixLog3(R):
                   * np.array([1 + R[0][0], R[1][0], R[2][0]])
         return VecToso3(np.pi * omg)
     else:
-        theta = np.arccos(SafeClip(acosinput,-1.0,1.0))
+        theta = np.arccos(SafeClip(acosinput, -1.0, 1.0))
         return theta / 2.0 / np.sin(theta) * (R - (R).T)
 
 
@@ -257,8 +257,8 @@ def TransInv(T):
     R, p = TransToRp(T)
     Rt = (R).T
     rarr = np.eye((4))
-    rarr[0:3,0:3] = Rt
-    rarr[0:3,3] = -np.dot(Rt, p)
+    rarr[0:3, 0:3] = Rt
+    rarr[0:3, 3] = -np.dot(Rt, p)
     return rarr
 
 
@@ -279,9 +279,9 @@ def VecTose3(V):
     se3m = VecToso3(arr1)
     arr2 = V[3:6]
     rarr = np.eye((4))
-    rarr[0:3,0:3] = se3m
-    rarr[0:3,3] = arr2
-    rarr[3,0:4] = np.zeros((1,4))
+    rarr[0:3, 0:3] = se3m
+    rarr[0:3, 3] = arr2
+    rarr[3, 0:4] = np.zeros((1, 4))
     return rarr
 
 @jit(nopython=True, cache=True)
@@ -297,7 +297,7 @@ def se3ToVec(se3mat):
     Output:
         np.array([1, 2, 3, 4, 5, 6])
     """
-    return np.array([se3mat[2][1], se3mat[0][2], se3mat[1][0],se3mat[0][3], se3mat[1][3], se3mat[2][3]])
+    return np.array([se3mat[2][1], se3mat[0][2], se3mat[1][0], se3mat[0][3], se3mat[1][3], se3mat[2][3]])
 
 
 @jit(nopython=True, cache=True)
@@ -321,10 +321,10 @@ def Adjoint(T):
     """
     R, p = TransToRp(T)
     rarr = np.eye((6))
-    rarr[0:3,0:3] = R
+    rarr[0:3, 0:3] = R
     vs3 = VecToso3(p)
-    rarr[3:6,0:3] = np.dot(vs3, R)
-    rarr[3:6,3:6] = R
+    rarr[3:6, 0:3] = np.dot(vs3, R)
+    rarr[3:6, 3:6] = R
     return rarr
 
 @jit(nopython=True, cache=True)
@@ -390,16 +390,16 @@ def MatrixExp6(se3mat):
     omgtheta = so3ToVec(se3mat[0: 3, 0: 3])
     if NearZero(Norm(omgtheta)):
         rarr = np.eye((4))
-        rarr[0:3,3] = se3mat[0:3,3]
+        rarr[0:3, 3] = se3mat[0:3, 3]
         return rarr
     else:
         theta = AxisAng3(omgtheta)[1]
         omgmat = se3mat[0: 3, 0: 3] / theta
-        me3 = MatrixExp3(se3mat[0:3,0:3])
-        npd = np.dot(np.eye(3) * theta + (1 - np.cos(theta)) * omgmat + (theta - np.sin(theta))* np.dot(omgmat,omgmat), se3mat[0: 3, 3]) / theta
+        me3 = MatrixExp3(se3mat[0:3, 0:3])
+        npd = np.dot(np.eye(3) * theta + (1 - np.cos(theta)) * omgmat + (theta - np.sin(theta))* np.dot(omgmat, omgmat), se3mat[0: 3, 3]) / theta
         rmat = np.eye((4))
-        rmat[0:3,0:3] = me3
-        rmat[0:3,3] = npd
+        rmat[0:3, 0:3] = me3
+        rmat[0:3, 3] = npd
         return rmat
 
 @jit(nopython=True)
@@ -418,9 +418,9 @@ def LocalToGlobal(reference, rel):
     pos = refPos + (rodRefRod @ relPos)
     trod = MatrixExp3(VecToso3(relRod.reshape((3))))
     rod = so3ToVec(MatrixLog3(rodRefRod @ trod))
-    ret = np.zeros((6,1))
-    ret[0:3] = pos.reshape((3,1))
-    ret[3:6] = rod.reshape((3,1))
+    ret = np.zeros((6, 1))
+    ret[0:3] = pos.reshape((3, 1))
+    ret[3:6] = rod.reshape((3, 1))
     return ret
 
 @jit(nopython=True, cache=True)
@@ -436,9 +436,9 @@ def GlobalToLocal(reference, rel):
     locPos = rodRefRod.conj().T @ (relPos - refPos)
     tRod = MatrixExp3(VecToso3(relRod.reshape((3))))
     locRod = so3ToVec(MatrixLog3(rodRefRod.conj().T @ tRod))
-    ret = np.zeros((6,1))
-    ret[0:3] = locPos.reshape((3,1))
-    ret[3:6] = locRod.reshape((3,1))
+    ret = np.zeros((6, 1))
+    ret[0:3] = locPos.reshape((3, 1))
+    ret[3:6] = locRod.reshape((3, 1))
     return ret
 
 @jit(nopython=True, cache=True)
@@ -460,18 +460,18 @@ def MatrixLog6(T):
     R, p = TransToRp(T)
     omgmat = MatrixLog3(R)
     if np.array_equal(omgmat, np.zeros((3, 3))):
-        rarr = np.zeros((4,4))
-        rarr[0:3,3] = np.array([T[0][3], T[1][3], T[2][3]])
+        rarr = np.zeros((4, 4))
+        rarr[0:3, 3] = np.array([T[0][3], T[1][3], T[2][3]])
         return rarr
     else:
         theta = np.arccos(SafeClip(((SafeTrace(R) - 1) / 2.0), -1.0, 1.0))
-        vec = np.array([T[0,3],T[1,3],T[2,3]])
+        vec = np.array([T[0, 3],T[1, 3],T[2, 3]])
         lterm = (np.eye(3) - omgmat / 2.0 + (1.0 / theta - 1.0 /
-            np.tan(theta / 2.0) / 2)* np.dot(omgmat,omgmat) / theta)
-        retv = np.dot(lterm,vec)
-        rarr = np.zeros((4,4))
-        rarr[0:3,0:3] = omgmat
-        rarr[0:3,3] = retv
+            np.tan(theta / 2.0) / 2)* np.dot(omgmat, omgmat) / theta)
+        retv = np.dot(lterm, vec)
+        rarr = np.zeros((4, 4))
+        rarr[0:3, 0:3] = omgmat
+        rarr[0:3, 3] = retv
         return rarr
 
 @jit(nopython=True, cache=True)
@@ -706,7 +706,7 @@ def SafeCopy(arr):
     newarr = np.zeros((s))
     for i in range(s[0]):
         for j in range(s[1]):
-            newarr[i,j] = arr[i,j]
+            newarr[i, j] = arr[i, j]
     return newarr
 
 @jit(nopython=True, cache=True)
@@ -768,7 +768,7 @@ def JacobianSpace(Slist, thetalist):
     Js = SafeCopy(Slist)
     T = np.eye(4)
     for i in range(1, len(thetalist)):
-        sSe3 = VecTose3(Slist[0:6,i-1] * thetalist[i - 1])
+        sSe3 = VecTose3(Slist[0:6, i-1] * thetalist[i - 1])
         T = np.dot(T, MatrixExp6(sSe3))
         dotAdj = np.dot(Adjoint(T), Slist[:, i])
         Js[:, i] = dotAdj
@@ -958,7 +958,7 @@ def InverseDynamics(thetalist, dthetalist, ddthetalist, g, Ftip, Mlist, \
     :return: The n-vector of required joint forces/torques
     This function uses forward-backward Newton-Euler iterations to solve the
     equation:
-    taulist = Mlist(thetalist)ddthetalist + c(thetalist,dthetalist) \
+    taulist = Mlist(thetalist)ddthetalist + c(thetalist, dthetalist) \
               + g(thetalist) + Jtr(thetalist)Ftip
     Example Input (3 Link Robot):
         thetalist = np.array([0.1, 0.1, 0.1])
@@ -1009,7 +1009,7 @@ def InverseDynamics(thetalist, dthetalist, ddthetalist, g, Ftip, Mlist, \
         AdTi[i] = Adjoint(np.dot(MatrixExp6(VecTose3(Ai[:, i] * \
                                             -thetalist[i])), \
                                  TransInv(Mlist[i])))
-        Vi[:, i + 1] = np.dot(AdTi[i], Vi[:,i]) + Ai[:, i] * dthetalist[i]
+        Vi[:, i + 1] = np.dot(AdTi[i], Vi[:, i]) + Ai[:, i] * dthetalist[i]
         Vdi[:, i + 1] = np.dot(AdTi[i], Vdi[:, i]) \
                        + Ai[:, i] * ddthetalist[i] \
                        + np.dot(ad(Vi[:, i + 1]), Ai[:, i]) * dthetalist[i]
@@ -1090,7 +1090,7 @@ def VelQuadraticForces(thetalist, dthetalist, Mlist, Glist, Slist):
     :param Glist: Spatial inertia matrices Gi of the links,
     :param Slist: Screw axes Si of the joints in a space frame, in the format
                   of a matrix with axes as the columns.
-    :return: The vector c(thetalist,dthetalist) of Coriolis and centripetal
+    :return: The vector c(thetalist, dthetalist) of Coriolis and centripetal
              terms for a given thetalist and dthetalist.
     This function calls InverseDynamics with g = 0, Ftip = 0, and
     ddthetalist = 0.
@@ -1244,7 +1244,7 @@ def ForwardDynamics(thetalist, dthetalist, taulist, g, Ftip, Mlist, \
                   of a matrix with axes as the columns
     :return: The resulting joint accelerations
     This function computes ddthetalist by solving:
-    Mlist(thetalist) * ddthetalist = taulist - c(thetalist,dthetalist) \
+    Mlist(thetalist) * ddthetalist = taulist - c(thetalist, dthetalist) \
                                      - g(thetalist) - Jtr(thetalist) * Ftip
     Example Input (3 Link Robot):
         thetalist = np.array([0.1, 0.1, 0.1])
@@ -1347,7 +1347,7 @@ def InverseDynamicsTrajectory(thetamat, dthetamat, ddthetamat, g, \
         method = 5
         traj = mr.JointTrajectory(thetastart, thetaend, Tf, N, method)
         thetamat = np.array(traj).copy()
-        dthetamat = np.zeros((1000,3 ))
+        dthetamat = np.zeros((1000, 3 ))
         ddthetamat = np.zeros((1000, 3))
         dt = tm/ (N - 1.0)
         for i in range(np.array(traj).shape[0] - 1):
@@ -1485,7 +1485,7 @@ def ForwardDynamicsTrajectory(thetalist, dthetalist, taumat, g, Ftipmat, \
                           [0, 1, 0, -0.089, 0, 0.425]]).T
         dt = 0.1
         intRes = 8
-        thetamat,dthetamat \
+        thetamat, dthetamat \
         = mr.ForwardDynamicsTrajectory(thetalist, dthetalist, taumat, g, \
                                        Ftipmat, Mlist, Glist, Slist, dt, \
                                        intRes)
@@ -1528,7 +1528,7 @@ def ForwardDynamicsTrajectory(thetalist, dthetalist, taumat, g, Ftipmat, \
             ddthetalist \
             = ForwardDynamics(thetalist, dthetalist, taumat[:, i], g, \
                               Ftipmat[:, i], Mlist, Glist, Slist)
-            thetalist,dthetalist = EulerStep(thetalist, dthetalist, \
+            thetalist, dthetalist = EulerStep(thetalist, dthetalist, \
                                              ddthetalist, 1.0 * dt / intRes)
         thetamat[:, i + 1] = thetalist
         dthetamat[:, i + 1] = dthetalist
@@ -1591,7 +1591,7 @@ def JointTrajectory(thetastart, thetaend, Tf, N, method):
              thetastart and the Nth row is thetaend . The elapsed time
              between each row is tm/ (N - 1)
     Example Input:
-        thetastart = np.array([1, 0, 0, 1, 1, 0.2, 0,1])
+        thetastart = np.array([1, 0, 0, 1, 1, 0.2, 0, 1])
         thetaend = np.array([1.2, 0.5, 0.6, 1.1, 2, 2, 0.9, 1])
         tm= 4
         N = 6
@@ -1929,7 +1929,7 @@ def SimulateControl(thetalist, dthetalist, g, Ftipmat, Mlist, Glist, \
         Ki = 10
         Kd = 18
         intRes = 8
-        taumat,thetamat \
+        taumat, thetamat \
         = mr.SimulateControl(thetalist, dthetalist, g, Ftipmat, Mlist, \
                              Glist, Slist, thetamatd, dthetamatd, \
                              ddthetamatd, gtilde, Mtildelist, Gtildelist, \
@@ -1939,10 +1939,10 @@ def SimulateControl(thetalist, dthetalist, g, Ftipmat, Mlist, Glist, \
     thetamatd = np.array(thetamatd).T
     dthetamatd = np.array(dthetamatd).T
     ddthetamatd = np.array(ddthetamatd).T
-    m,n = np.array(thetamatd).shape
+    m, n = np.array(thetamatd).shape
     thetacurrent = np.array(thetalist).copy()
     dthetacurrent = np.array(dthetalist).copy()
-    eint = np.zeros((m,1)).reshape(m,)
+    eint = np.zeros((m, 1)).reshape(m,)
     taumat = np.zeros(np.array(thetamatd).shape)
     thetamat = np.zeros(np.array(thetamatd).shape)
     for i in range(n):

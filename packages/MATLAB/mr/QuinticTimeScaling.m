@@ -10,7 +10,7 @@ function s = QuinticTimeScaling(Tf, t)
 % clear; clc;
 % Tf = 2;
 % t = 0.6;
-% s = QuinticTimeScaling(Tf,t)
+% s = QuinticTimeScaling(Tf, t)
 % 
 % Output:
 % s =
